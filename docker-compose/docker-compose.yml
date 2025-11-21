@@ -1,0 +1,142 @@
+version: '3.8'
+
+volumes:
+  pinotController1:
+  pinotServer1:
+
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.0
+    hostname: zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    healthcheck:
+      test: [ "CMD", "bash", "-c", "echo 'ruok' | nc localhost 2181" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  broker_1:
+    image: confluentinc/cp-kafka:7.4.0
+    hostname: broker_1
+    container_name: broker_1
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+    ports:
+      - "9092:9092"
+      - "9101:9101"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker_1:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:29092,PLAINTEXT_HOST://0.0.0.0:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_CONFLUENT_LICENSE_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_CONFLUENT_BALANCER_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_JMX_PORT: 9101
+      KAFKA_JMX_HOSTNAME: localhost
+      KAFKA_CFG_LOG_RETENTION_HOURS: 720       # 30 ngày
+      KAFKA_CFG_LOG_RETENTION_BYTES: -1        # Không giới hạn
+      KAFKA_CFG_LOG_SEGMENT_BYTES: 1073741824
+      KAFKA_CFG_OFFSETS_RETENTION_MINUTES: 10080
+      KAFKA_CFG_LOG_CLEANUP_POLICY: delete
+      KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    healthcheck:
+      test: [ "CMD", "bash", "-c", 'nc -z localhost 9092' ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  broker_2:
+    image: confluentinc/cp-kafka:7.4.0
+    hostname: broker_2
+    container_name: broker_2
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+    ports:
+      - "9093:9093"
+      - "9102:9102"
+    environment:
+      KAFKA_BROKER_ID: 2
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker_2:29093,PLAINTEXT_HOST://localhost:9093
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:29093,PLAINTEXT_HOST://0.0.0.0:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_CONFLUENT_LICENSE_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_CONFLUENT_BALANCER_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_JMX_PORT: 9102
+      KAFKA_JMX_HOSTNAME: localhost
+      KAFKA_CFG_LOG_RETENTION_HOURS: 720       # 30 ngày
+      KAFKA_CFG_LOG_RETENTION_BYTES: -1        # Không giới hạn
+      KAFKA_CFG_LOG_SEGMENT_BYTES: 1073741824
+      KAFKA_CFG_OFFSETS_RETENTION_MINUTES: 10080
+      KAFKA_CFG_LOG_CLEANUP_POLICY: delete
+      KAFKA_CFG_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    healthcheck:
+      test: [ "CMD", "bash", "-c", 'nc -z localhost 9093' ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: gps
+      POSTGRES_PASSWORD: gps123
+      POSTGRES_DB: gpsdb
+      TZ: Asia/Ho_Chi_Minh
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_INSTALL_PLUGINS=grafana-worldmap-panel,pr0ps-trackmap-panel
+    depends_on:
+      - postgres
+    volumes:
+      - ./grafana_data:/var/lib/grafana
+      - ./custom.ini:/etc/grafana/grafana.ini
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+#  spark-master:
+#    image: bitnami/spark:latest
+#    command: bin/spark-class org.apache.spark.deploy.master.Master
+#    ports:
+#      - "9090:8080"
+#      - "7077:7077"
+
+#  spark-worker:
+#    image: bitnami/spark:latest
+#    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+#    depends_on:
+#      - spark-master
+#    environment:
+#      SPARK_MODE: worker
+#      SPARK_WORKER_CORES: 2
+#      SPARK_WORKER_MEMORY: 1g
+#      SPARK_MASTER_URL: spark://spark-master:7077
