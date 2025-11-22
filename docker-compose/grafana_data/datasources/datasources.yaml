@@ -1,0 +1,16 @@
+apiVersion: 1
+datasources:
+  - name: GPS Postgres
+    type: grafana-postgresql-datasource
+    uid: cf4h4hrs2h728d
+    url: postgres:5432
+    user: gps
+    secureJsonData:
+      password: gps123
+    database: gpsdb
+    jsonData:
+      postgresVersion: 1500
+      sslmode: disable
+      timescaledb: false
+    isDefault: true
+    readOnly: false

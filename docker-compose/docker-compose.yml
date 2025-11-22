@@ -3,6 +3,7 @@ version: '3.8'
 volumes:
   pinotController1:
   pinotServer1:
+  grafana_storage:
 
 services:
   zookeeper:
@@ -99,6 +100,7 @@ services:
       POSTGRES_PASSWORD: gps123
       POSTGRES_DB: gpsdb
       TZ: Asia/Ho_Chi_Minh
+    command: ["postgres","-c","max_connections=300","-c","shared_buffers=256MB"]
     healthcheck:
       test: [ "CMD", "pg_isready", "-U", "postgres" ]
       interval: 10s
@@ -107,17 +109,27 @@ services:
 
   grafana:
     image: grafana/grafana:latest
+    # Optional: uncomment build section below to use custom Dockerfile with extra CA certs
+    # build:
+    #   context: ./grafana
+    #   dockerfile: Dockerfile
     container_name: grafana
     ports:
       - "3000:3000"
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
-      - GF_INSTALL_PLUGINS=grafana-worldmap-panel,pr0ps-trackmap-panel
+      # Removed deprecated worldmap plugin preinstall to speed startup.
+      - GF_LOG_LEVEL=debug
+      - GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH=/etc/grafana/dashboards/gps_latest_points.json
+      # NOTE: GF_INSTALL_PLUGINS deprecated; removed to avoid double install + TLS errors.
     depends_on:
       - postgres
     volumes:
-      - ./grafana_data:/var/lib/grafana
+      - grafana_storage:/var/lib/grafana
+      - ./grafana_data/dashboard/gps_latest_points.json:/etc/grafana/dashboards/gps_latest_points.json
       - ./custom.ini:/etc/grafana/grafana.ini
+      - ./grafana_data/dashboard:/etc/grafana/dashboards
+      - ./grafana_data/datasources:/etc/grafana/dashboard
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
       interval: 30s

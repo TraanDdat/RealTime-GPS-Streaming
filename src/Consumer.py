@@ -13,7 +13,7 @@ jdbc_url = "jdbc:postgresql://localhost:5432/gpsdb"
 
 # DBSCAN PARAMETERS
 earth_radius = 6371000
-eps = 50 / earth_radius
+eps = 20 / earth_radius
 min_samples = 5
 
 def spark_init():
@@ -130,7 +130,7 @@ def detect_stops_for_user(pdf: pd.DataFrame):
 
         duration = (end_ts - start_ts).total_seconds()
 
-        if duration >= 300:  # 300 seconds = 5 minutes
+        if duration >= 15:
             stops.append({
                 "user_id": str(cluster_points['user_id'].iloc[0]),
                 "cluster_id": int(cid),

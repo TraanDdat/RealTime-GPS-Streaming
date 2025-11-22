@@ -1,0 +1,34 @@
+{
+  "$schema": "https://raw.githubusercontent.com/grafana/grafana/main/docs/sources/developers/plugins/plugin.schema.json",
+  "type": "panel",
+  "name": "TrackMap",
+  "id": "pr0ps-trackmap-panel",
+  "info": {
+    "description": "A panel that visualizes GPS points as a line on an interactive map",
+    "author": {
+      "name": "Carey Metcalfe",
+      "url": "https://cmetcalfe.ca"
+    },
+    "keywords": ["trackmap", "track", "map", "gps", "latitude", "longitude", "grafana", "plugin", "panel"],
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "links": [
+      { "name": "Project site", "url": "https://github.com/pR0Ps/grafana-trackmap-panel" },
+      { "name": "Project Readme", "url": "https://github.com/pR0Ps/grafana-trackmap-panel/blob/master/README.md" },
+      { "name": "Project license", "url": "https://github.com/pR0Ps/grafana-trackmap-panel/blob/master/LICENSE" }
+    ],
+    "screenshots": [
+      { "name": "Show current selection as a dot on the map", "path": "img/topo-crosshair.jpg" },
+      { "name": "Zoom in by selecting a range of points", "path": "img/topo-boxselect.jpg" },
+      { "name": "Chose what map to display the data on", "path": "img/satellite-picker.jpg" }
+    ],
+    "version": "3.0.2",
+    "updated": "2024-11-01"
+  },
+  "dependencies": {
+    "grafanaDependency": ">=10.3.3",
+    "plugins": []
+  }
+}

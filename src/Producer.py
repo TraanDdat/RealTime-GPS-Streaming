@@ -71,7 +71,7 @@ def stream_user(producer, file_path):
 
             print(f"[User {record['user_id']}] Sent -> {record}")
 
-            time.sleep(1)
+            time.sleep(0.4)
 
     print(f"Done streaming user file: {file_name}")
 

@@ -1,0 +1,41 @@
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+{
+  "manifestVersion": "2.0.0",
+  "signatureType": "community",
+  "signedByOrg": "pr0ps",
+  "signedByOrgName": "pr0ps",
+  "plugin": "pr0ps-trackmap-panel",
+  "version": "3.0.2",
+  "time": 1730438428501,
+  "keyId": "7e4d0c6a708866e7",
+  "files": {
+    "8f2c4d11474275fbc161.png": "066daca850d8ffbef007af00b06eac0015728dee279c51f3cb6c716df7c42edf",
+    "LICENSE": "46e0ad9861e439fa82279f7d87fb8472e82d79982b7e0a5e68b7c4add272666a",
+    "CHANGELOG.md": "b796eea486ad0d15920e2641072dcfc7d8a3edb6155bb21334f6cc150cdc9431",
+    "2b3e1faf89f94a483539.png": "574c3a5cca85f4114085b6841596d62f00d7c892c7b03f28cbfa301deb1dc437",
+    "plugin.json": "89deb74169e24f18adce4b68975a663a612c6071a519ec1ccaff1ee2ca985d78",
+    "module.js.map": "8121168736b00030c03324cfef85fe8d9605ddcda59d336bc0c1fa70f2f8a3f7",
+    "README.md": "2184ef284da778f46c913517c195141b556c320a0d80fc555547e8f6bfd1a554",
+    "416d91365b44e4b4f477.png": "1dbbe9d028e292f36fcba8f8b3a28d5e8932754fc2215b9ac69e4cdecf5107c6",
+    "img/satellite-picker.jpg": "799c2940e76ed71bd183331aff30dd2292c21aef8dfc4295077eb417e551fd28",
+    "img/topo-crosshair.jpg": "1090053bcb1f0cd005f9ad2bd3b9b66e7174e45905cef363723a6ef75bfc4170",
+    "img/logo.svg": "0e96903ec06714976a6117661d3a5c2184ba5b2ef20a3429fd0ce903c3ac98b7",
+    "img/topo-boxselect.jpg": "841f1491cb777a93f1579d950df83c1c00f40a2b284d6680025b6e9b19e4209c",
+    "module.js": "8811e59ac5480d63ca01c4a399a6b69dbf4961d8f6a9d9fea37960e498ce1e1c",
+    "module.js.LICENSE.txt": "ea790f3be4982c33c90750c0596263856a361f65ff6369653718f93c29a6520c"
+  }
+}
+-----BEGIN PGP SIGNATURE-----
+Version: OpenPGP.js v4.10.11
+Comment: https://openpgpjs.org
+
+wrkEARMKAAYFAmckZRwAIQkQfk0ManCIZucWIQTzOyW2kQdOhGNlcPN+TQxq
+cIhm57kAAgkAYzWczYaxyFjmZN0ljNDwaYGxapx6q7Hk24OVypvpgS8RP9Aa
+XbJ9Oa6aRj0JIBFt+fdeK43qWWV5aIAL7R7UQLgCCQFWjnbP/26UubxtI4lo
+v5Lc3JDgRrNmo6dCIFSUChqLUfPYbxqEqt1eSGHuZa6CbZ54o5e5o7lgkLhY
+nh7mn8d4bQ==
+=lPUI
+-----END PGP SIGNATURE-----
