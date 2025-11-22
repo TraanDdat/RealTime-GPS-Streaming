@@ -51,10 +51,6 @@ def on_send_success(record_metadata):
 def on_send_error(excp):
     print(f"Failed to send message: {excp}")
 
-# -------------------------------
-# Đọc CSV và gửi dữ liệu
-# -------------------------------
-
 def stream_user(producer, file_path):
     file_name = os.path.basename(file_path)
     with open(file_path, "r", encoding="utf-8") as f:
