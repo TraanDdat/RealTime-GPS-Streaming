@@ -120,16 +120,14 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=admin
       # Removed deprecated worldmap plugin preinstall to speed startup.
       - GF_LOG_LEVEL=debug
-      - GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH=/etc/grafana/dashboards/gps_latest_points.json
       # NOTE: GF_INSTALL_PLUGINS deprecated; removed to avoid double install + TLS errors.
     depends_on:
       - postgres
     volumes:
       - grafana_storage:/var/lib/grafana
-      - ./grafana_data/dashboard/gps_latest_points.json:/etc/grafana/dashboards/gps_latest_points.json
       - ./custom.ini:/etc/grafana/grafana.ini
-      - ./grafana_data/dashboard:/etc/grafana/dashboards
-      - ./grafana_data/datasources:/etc/grafana/dashboard
+      - ./grafana_data/dashboard:/etc/grafana/provisioning/dashboards
+      - ./grafana_data/datasources:/etc/grafana/provisioning/datasources
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
       interval: 30s
